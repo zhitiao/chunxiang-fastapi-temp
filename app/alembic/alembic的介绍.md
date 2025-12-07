@@ -48,7 +48,6 @@ Alembic 是 SQLAlchemy 作者开发的数据库迁移工具，它可以：
 - 自动生成迁移脚本
 
 ### Alembic 项目结构
-
 ```
 alembic/
 ├── env.py           # 主要配置文件
