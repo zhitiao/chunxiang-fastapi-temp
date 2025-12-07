@@ -10,7 +10,6 @@
     uvicorn main:app --reload
 """
 
-
 import logging
 from contextlib import asynccontextmanager
 from sqlalchemy.exc import SQLAlchemyError
@@ -38,6 +37,7 @@ logger = logging.getLogger(__name__)
 # |_|  \__,_|___/\__\__,_| .__/|_|  \__\___|_| |_| |_| .__/
 #                        |_|                         |_|
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """管理应用生命周期。
@@ -48,7 +48,8 @@ async def lifespan(app: FastAPI):
         app: FastAPI应用实例
     """
     # 启动日志
-    logger.info("""
+    logger.info(
+        """
 #>  ___________________________________
 #> / 纯想: 纯想fastapi模版    \\
 #> | 在2025年新年之际为0基础全栈开发课程搭建  |
@@ -70,7 +71,8 @@ async def lifespan(app: FastAPI):
 #>            \\| | |_|/\\
 #>       zcx  //_// ___/
 #>                \\_)
-    """)
+    """
+    )
     logger.info("🚀 —————————————————— 程序启动")
     logger.info(f"🌍 运行环境: {settings.ENVIRONMENT}")
     logger.info(f"📝 项目名称: {settings.PROJECT_NAME}")
@@ -88,7 +90,11 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     # 生产环境禁用文档
-    docs_url=None if settings.ENVIRONMENT == "production" else "/docs",
+    docs_url=(
+        None
+        if settings.ENVIRONMENT == "production"
+        else "/docs"
+    ),
     redoc_url=None,
     lifespan=lifespan,
 )
@@ -98,7 +104,9 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 
 @app.exception_handler(ErrorMod)
-async def error_mod_exception_handler(request: Request, exc: ErrorMod):
+async def error_mod_exception_handler(
+    request: Request, exc: ErrorMod
+):
     """处理自定义错误。
 
     参数:
@@ -117,7 +125,9 @@ async def error_mod_exception_handler(request: Request, exc: ErrorMod):
 
 
 @app.exception_handler(SQLAlchemyError)
-async def database_exception_handler(request: Request, exc: SQLAlchemyError):
+async def database_exception_handler(
+    request: Request, exc: SQLAlchemyError
+):
     """处理数据库异常。
 
     参数:
@@ -127,5 +137,12 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError):
     返回:
         通用错误响应
     """
-    logger.error(f"Database error for URL {request.url}: {exc}")
-    return JSONResponse(status_code=500, content={"message": "Service temporarily unavailable. Please try again later."})
+    logger.error(
+        f"Database error for URL {request.url}: {exc}"
+    )
+    return JSONResponse(
+        status_code=500,
+        content={
+            "message": "Service temporarily unavailable. Please try again later."
+        },
+    )
