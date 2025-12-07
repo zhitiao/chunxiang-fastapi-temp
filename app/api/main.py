@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.routes import divination, login, user, todo
+from app.api.routes import divination, login, user, todo, ai
 
 api_router = APIRouter()
 
@@ -9,3 +9,4 @@ api_router.include_router(
     divination.router, prefix="/divination", tags=["占卜"]
 )  # 新增的占卜路由
 api_router.include_router(todo.router, prefix="/todo", tags=["待办事项"])
+api_router.include_router(ai.router, prefix="/ai", tags=["AI 接口"])
